@@ -81,7 +81,7 @@ namespace Restaurant.Services.ShoppingCart.Repository
             {
                 CartHeader = await _db.CartHeaders.FirstOrDefaultAsync()
             };
-            cart.CartDetails = _db.CartDetails.Where(u => u.CardHeaderId == cart.CartHeader.CartHeaderId).Include(u=>u.Product);
+            cart.CartDetails = _db.CartDetails.Include(u=>u.Product);
             return _mapper.Map<CartDto>(cart);
 
         }

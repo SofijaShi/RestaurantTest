@@ -62,7 +62,7 @@ namespace Restaurant.Web.Controllers
             List<CartDetailsDto> cartDetailsDtos = new List<CartDetailsDto>();
             cartDetailsDtos.Add(cartDetailsDto);
             cartDto.CartDetails = cartDetailsDtos;
-            var addToCartResp = await _cartService.AddToCartByUserIdAsync<ResponseDto>(cartDto);
+            var addToCartResp = await _cartService.AddToCartAsync<ResponseDto>(cartDto);
             if (addToCartResp != null && addToCartResp.IsSuccess)
             {
                 return RedirectToAction(nameof(Index));

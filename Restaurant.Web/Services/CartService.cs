@@ -10,7 +10,7 @@ namespace Restaurant.Web.Services
         {
             _clientFactory = clientFactory;
         }
-        public async Task<T> AddToCartByUserIdAsync<T>(CartDto cartDto, string token = null)
+        public async Task<T> AddToCartAsync<T>(CartDto cartDto, string token = null)
         {
 
             return await this.SendAsync<T>(new ApiRequest()
@@ -22,18 +22,17 @@ namespace Restaurant.Web.Services
             });
         }
 
-        public async Task<T> GetCartByUserIdAsync<T>(string userId, string token = null)
+        public async Task<T> GetCartAsync<T>(string token = null)
         {
             return await this.SendAsync<T>(new ApiRequest()
             {
                 ApiType = SD.ApiType.GET,
-                Data = userId,
-                Url = SD.ShoppingCartAPIBase + "/api/cart/GetCart/" + userId,
+                Url = SD.ShoppingCartAPIBase + "/api/cart/GetCart/",
                 AccessToken = ""
             });
         }
 
-        public async Task<T> RemoveFromCartByUserIdAsync<T>(int cartId, string token = null)
+        public async Task<T> RemoveFromCartAsync<T>(int cartId, string token = null)
         {
             return await this.SendAsync<T>(new ApiRequest()
             {
@@ -44,7 +43,7 @@ namespace Restaurant.Web.Services
             });
         }
 
-        public async Task<T> UpdateCartByUserIdAsync<T>(CartDto cartDto, string token = null)
+        public async Task<T> UpdateCartAsync<T>(CartDto cartDto, string token = null)
         {
             return await this.SendAsync<T>(new ApiRequest()
             {
