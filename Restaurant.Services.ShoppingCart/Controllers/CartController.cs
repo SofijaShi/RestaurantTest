@@ -80,5 +80,38 @@ namespace Restaurant.Services.ShoppingCart.Controllers
             }
             return _response;
         }
+
+        [HttpPost("ApplyCoupon")]
+        public async Task<object> ApplyCoupon([FromBody] CartDto cartDto)
+        {
+            try
+            {
+                bool isSuccess = await _cartRepository.ApplyCoupon(cartDto.CartHeader.CouponCode);
+                _response.Result = isSuccess;
+
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string>() { ex.ToString() };
+            }
+            return _response;
+        }
+        [HttpPost("RemoveCoupon")]
+        public async Task<object> RemoveCart([FromBody] string couponCode)
+        {
+            try
+            {
+                bool isSuccess = await _cartRepository.RemoveCoupon();
+                _response.Result = isSuccess;
+
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string>() { ex.ToString() };
+            }
+            return _response;
+        }
     }
 }

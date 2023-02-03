@@ -16,6 +16,16 @@ namespace Restaurant.Services.ShoppingCart.Repository
             _db = db;
             _mapper = mapper;
         }
+
+        public async Task<bool> ApplyCoupon(string couponCode)
+        {
+            CartHeader cartHeader = new CartHeader();
+            cartHeader.CouponCode = couponCode;
+            _db.CartHeaders.Add(cartHeader);
+            await _db.SaveChangesAsync();
+            return true;
+        }
+
         public async Task<bool> ClearCart(string userId)
         {
             var cartHeaderFromDb = await _db.CartHeaders.FirstOrDefaultAsync(u => u.UserId == userId);
@@ -84,6 +94,20 @@ namespace Restaurant.Services.ShoppingCart.Repository
             cart.CartDetails = _db.CartDetails.Include(u=>u.Product);
             return _mapper.Map<CartDto>(cart);
 
+        }
+
+        public async Task<bool> RemoveCoupon(string couponCode)
+        {
+            CartHeader cartHeader = _db.CartHeaders.FirstOrDefault(x  => x.CouponCode == couponCode);
+            cartHeader.CouponCode = "";
+            _db.CartHeaders.Update(cartHeader);
+            await _db.SaveChangesAsync();
+            return true;
+        }
+
+        public Task<bool> RemoveCoupon()
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<bool> RemoveFromCart(int cartDetailsId)
