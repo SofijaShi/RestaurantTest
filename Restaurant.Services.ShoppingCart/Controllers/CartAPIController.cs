@@ -6,12 +6,12 @@ namespace Restaurant.Services.ShoppingCart.Controllers
 {
     [ApiController]
     [Route("api/cart")]
-    public class CartController : Controller
+    public class CartAPIController : Controller
     {
         private readonly ICartRepository _cartRepository;
         protected ResponseDto _response;
 
-        public CartController(ICartRepository cartRepository)
+        public CartAPIController(ICartRepository cartRepository)
         {
             _cartRepository = cartRepository;
             this._response = new ResponseDto();
@@ -98,11 +98,11 @@ namespace Restaurant.Services.ShoppingCart.Controllers
             return _response;
         }
         [HttpPost("RemoveCoupon")]
-        public async Task<object> RemoveCart([FromBody] string couponCode)
+        public async Task<object> RemoveCoupon([FromBody] string couponCode)
         {
             try
             {
-                bool isSuccess = await _cartRepository.RemoveCoupon();
+                bool isSuccess = await _cartRepository.RemoveCoupon(couponCode);
                 _response.Result = isSuccess;
 
             }
