@@ -39,6 +39,33 @@ namespace Restaurant.Web.Controllers
         {
             return View(await LoadCartDto());
         }
+        [HttpPost]
+        [ActionName("ApplyCoupon")]
+        public async Task<IActionResult> ApplyCoupon(CartDto cartDto)
+        {
+            var response = await _cartService.ApplyCoupon<ResponseDto>(cartDto);
+
+            if(response != null && response.IsSuccess)
+            {
+                return RedirectToAction(nameof(CartIndex));
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        [ActionName("RemoveCoupon")]
+        public async Task<IActionResult> RemoveCoupon(string couponCode)
+        {
+            var response = await _cartService.RemoveCoupon<ResponseDto>(couponCode);
+
+            if (response != null && response.IsSuccess)
+            {
+                return RedirectToAction(nameof(CartIndex));
+            }
+
+            return View();
+        }
 
         public async Task<IActionResult> Remove(int cartDetailsId)
         {
@@ -49,5 +76,13 @@ namespace Restaurant.Web.Controllers
             }
             return View();
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Checkout()
+        {
+            return View(await LoadCartDto());
+        }
+
     }
 }

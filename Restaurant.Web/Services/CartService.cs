@@ -22,12 +22,34 @@ namespace Restaurant.Web.Services
             });
         }
 
+        public async Task<T> ApplyCoupon<T>(CartDto cartDto, string token = null)
+        {
+            return await this.SendAsync<T>(new ApiRequest()
+            {
+                ApiType = SD.ApiType.POST,
+                Data = cartDto,
+                Url = SD.ShoppingCartAPIBase + "/api/cart/ApplyCoupon",
+                AccessToken = ""
+            });
+        }
+
         public async Task<T> GetCartAsync<T>(string token = null)
         {
             return await this.SendAsync<T>(new ApiRequest()
             {
                 ApiType = SD.ApiType.GET,
                 Url = SD.ShoppingCartAPIBase + "/api/cart/GetCart/",
+                AccessToken = ""
+            });
+        }
+
+        public async Task<T> RemoveCoupon<T>(string couponCode, string token = null)
+        {
+            return await this.SendAsync<T>(new ApiRequest()
+            {
+                ApiType = SD.ApiType.POST,
+                Data = couponCode,
+                Url = SD.ShoppingCartAPIBase + "/api/cart/RemoveCoupon",
                 AccessToken = ""
             });
         }
