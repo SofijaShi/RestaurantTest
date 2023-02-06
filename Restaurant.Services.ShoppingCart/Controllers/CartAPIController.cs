@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Restaurant.Services.ShoppingCart.Messages;
 using Restaurant.Services.ShoppingCart.Models.Dto;
 using Restaurant.Services.ShoppingCart.Repository;
 
@@ -105,6 +106,27 @@ namespace Restaurant.Services.ShoppingCart.Controllers
                 bool isSuccess = await _cartRepository.RemoveCoupon(couponCode);
                 _response.Result = isSuccess;
 
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string>() { ex.ToString() };
+            }
+            return _response;
+        }
+
+        [HttpPost("Checkout")]
+        public async Task<object> Checkout(CheckoutHeaderDto checkoutHeader)
+        {
+            try
+            {
+                CartDto cartDto = await _cartRepository.GetCard();
+                if (cartDto == null)
+                {
+                    return BadRequest();
+                }
+
+                checkoutHeader.CartDetails = cartDto.CartDetails;
             }
             catch (Exception ex)
             {

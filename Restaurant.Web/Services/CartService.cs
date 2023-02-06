@@ -33,6 +33,17 @@ namespace Restaurant.Web.Services
             });
         }
 
+        public async Task<T> Checkout<T>(CartHeaderDto cartHeaderDto, string token = null)
+        {
+            return await this.SendAsync<T>(new ApiRequest()
+            {
+                ApiType = SD.ApiType.POST,
+                Data = cartHeaderDto,
+                Url = SD.ShoppingCartAPIBase + "/api/cart/Checkout",
+                AccessToken = ""
+            });
+        }
+
         public async Task<T> GetCartAsync<T>(string token = null)
         {
             return await this.SendAsync<T>(new ApiRequest()
