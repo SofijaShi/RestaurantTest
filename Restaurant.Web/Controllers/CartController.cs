@@ -77,11 +77,30 @@ namespace Restaurant.Web.Controllers
             return View();
         }
 
-
-        [HttpGet]
         public async Task<IActionResult> Checkout()
         {
             return View(await LoadCartDto());
+        }
+
+        [HttpPost]
+        [ActionName("Checkout")]
+        public async Task<IActionResult> Checkout(CartDto cartDto)
+        {
+            try
+            {
+                var response = await _cartService.Checkout<ResponseDto>(cartDto.CartHeader, "");
+        
+                return RedirectToAction(nameof(Confirmation));
+            }
+            catch (Exception e)
+            {
+                return View(cartDto);
+            }
+        }
+
+        public async Task<IActionResult> Confirmation()
+        {
+            return View();
         }
 
     }
