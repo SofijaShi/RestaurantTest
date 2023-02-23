@@ -1,11 +1,8 @@
-﻿using Restaurant.MessageBus;
-using Restaurant.Services.ShoppingCart.Models.Dto;
-
-namespace Restaurant.Services.ShoppingCart.Messages
+﻿namespace Restaurant.Services.OrderAPI.Models
 {
-    public class CheckoutHeaderDto: BaseMessage
+    public class OrderHeader
     {
-        public int CartHeaderId { get; set; }
+        public int OrderHeaderId { get; set; }
         public string UserId { get; set; }
         public string CouponCode { get; set; }
         public double OrderTotal { get; set; }
@@ -14,7 +11,9 @@ namespace Restaurant.Services.ShoppingCart.Messages
         public string Email { get; set; }
         public string Phone { get; set; }
         public DateTime PickUpDateTime { get; set; }
+        public DateTime OrderTime { get; set; }
         public int CartTotalItems { get; set; }
-        public IEnumerable<CartDetailsDto> CartDetails { get; set; }
+        public List<OrderDetails> OrderDetails { get; set; }
+        public bool PaymentStatus { get; set; }
     }
 }

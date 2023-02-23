@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Restaurant.Services.ShoppingCart.Messages;
 using Restaurant.Services.ShoppingCart.Models.Dto;
+using Restaurant.Services.ShoppingCart.RabbitMqSender;
 using Restaurant.Services.ShoppingCart.Repository;
 
 namespace Restaurant.Services.ShoppingCart.Controllers
@@ -11,10 +12,12 @@ namespace Restaurant.Services.ShoppingCart.Controllers
     {
         private readonly ICartRepository _cartRepository;
         protected ResponseDto _response;
+        private readonly IRabbitMQCartMessageSender _rabbitMQCartMessageSender;
 
-        public CartAPIController(ICartRepository cartRepository)
+        public CartAPIController(ICartRepository cartRepository, IRabbitMQCartMessageSender rabbitMQCartMessageSender)
         {
             _cartRepository = cartRepository;
+            _rabbitMQCartMessageSender = rabbitMQCartMessageSender;
             this._response = new ResponseDto();
         }
         [HttpGet("GetCart")]
@@ -127,6 +130,7 @@ namespace Restaurant.Services.ShoppingCart.Controllers
                 }
 
                 checkoutHeader.CartDetails = cartDto.CartDetails;
+                _rabbitMQCartMessageSender.SendMessage(checkoutHeader, "checkoutqueue");
             }
             catch (Exception ex)
             {
