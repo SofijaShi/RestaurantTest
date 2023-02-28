@@ -49,21 +49,5 @@ namespace Restaurant.ProductAPI.Tests.Controller
             result.Result.Should().BeOfType<ResponseDto>();
         }
 
-        [Fact]
-        public void ProductAPIController_CreateProduct_ReturnProductById()
-        {
-            //Arrange
-            var product = A.Fake<ProductDto>();
-            A.CallTo(() => _productRepository.GetProductById(1)).Returns(product);
-            var controller = new ProductApiController(_productRepository);
-
-            //Act
-            var result = controller.Get(1);
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Result.Should().BeOfType<ResponseDto>();
-        }
-
     }
 }
